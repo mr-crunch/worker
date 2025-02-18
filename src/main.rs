@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::io;
-
+#[derive(Debug)]
 struct Worker {
     name: String,
     department: String,
@@ -10,15 +10,13 @@ struct Worker {
 
 impl Worker {
     fn print(&self) {
-        println!(
-            "name: {} department: {}, position: {} salary: {}",
-            self.name, self.department, self.position, self.salary
-        );
+        println!("{:?}", self);
     }
 }
 
 fn main() {
     loop {
+        println!("enter names:");
         let mut input = String::new();
         let result = get_input();
         match result {
@@ -29,15 +27,15 @@ fn main() {
         if names[0] == "exit" {
             break;
         }
-        let employees = employee_list(names);
-        for employee in employees {
-            employee.1.print()
+        let mut employees = employee_list(names);
+        add_department(&mut employees);
+        for employee in &employees {
+            employee.1.print();
         }
     }
 }
 
 fn get_input() -> Result<String, io::Error> {
-    println!("enter names: ");
     let mut input = String::new();
     io::stdin().read_line(&mut input)?;
     Ok(input.trim().to_string())
@@ -54,4 +52,20 @@ fn employee_list(input: Vec<&str>) -> HashMap<String, Worker> {
         });
     }
     employees
+}
+
+fn add_department(map: &mut HashMap<String, Worker>) {
+    println!("enter name and department");
+    println!("FORMAT: Add NAME to DEPARTMENT");
+    let input = get_input();
+    let mut input_list = String::new();
+    match input {
+        Ok(string) => input_list = string,
+        Err(error) => eprintln!("error: {:?}", error),
+    }
+    let input_list = input_list.split(char::is_whitespace).collect::<Vec<_>>();
+    let name = input_list[1].to_string();
+    let department = input_list[3].to_string();
+    map.entry(name)
+        .and_modify(|worker| worker.department = department);
 }
