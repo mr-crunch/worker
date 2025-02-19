@@ -1,5 +1,10 @@
 use std::collections::HashMap;
 use std::io;
+
+struct Department {
+    department_list: HashMap<Worker, String>,
+}
+
 #[derive(Debug)]
 struct Worker {
     name: String,
@@ -65,7 +70,13 @@ fn add_department(map: &mut HashMap<String, Worker>) {
     }
     let input_list = input_list.split(char::is_whitespace).collect::<Vec<_>>();
     let name = input_list[1].to_string();
-    let department = input_list[3].to_string();
-    map.entry(name)
-        .and_modify(|worker| worker.department = department);
+    let department = input_list[3];
+    match map.get_mut(&name) {
+        Some(worker) => worker.department = department.to_string(),
+        None => new_department(department),
+    }
+    //map.entry(name)
+    //.and_modify(|worker| worker.department = department);
 }
+
+fn new_department(department: &str) {}
