@@ -1,23 +1,24 @@
 use std::collections::HashMap;
 use std::io;
-
-struct Department {
-    department_list: HashMap<Worker, String>,
-}
-
-#[derive(Debug)]
-struct Worker {
-    name: String,
-    department: String,
-    position: String,
-    salary: String,
-}
-
-impl Worker {
-    fn print(&self) {
-        println!("{:?}", self);
-    }
-}
+mod company;
+use crate::company::Worker;
+//struct Department {
+//    department_list: HashMap<Worker, String>,
+//}
+//
+//#[derive(Debug)]
+//struct Worker {
+//    name: String,
+//    department: String,
+//    position: String,
+//    salary: String,
+//}
+//
+//impl Worker {
+//    fn print(&self) {
+//        println!("{:?}", self);
+//    }
+//}
 
 fn main() {
     loop {
@@ -61,7 +62,7 @@ fn employee_list(input: Vec<&str>) -> HashMap<String, Worker> {
 
 fn add_department(map: &mut HashMap<String, Worker>) {
     println!("enter name and department");
-    println!("FORMAT: Add NAME to DEPARTMENT");
+    println!("FORMAT: Add {{name}} to {{department}}");
     let input = get_input();
     let mut input_list = String::new();
     match input {
